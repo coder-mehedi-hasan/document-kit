@@ -12,5 +12,10 @@ npx prisma studio
 npm run dev
 ```
 
+# Change Schema
+```JS
+npx prisma db push
+```
+
 # Inspired By
 [`Create full stack app using postgres with prisma`](https://vercel.com/guides/nextjs-prisma-postgres#step-5.-update-the-existing-views-to-load-data-from-the-database)
