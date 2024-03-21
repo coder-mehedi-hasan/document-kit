@@ -8,9 +8,9 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false, // Changed to emit JavaScript files
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
