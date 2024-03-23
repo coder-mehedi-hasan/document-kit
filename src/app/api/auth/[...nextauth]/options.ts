@@ -14,14 +14,6 @@ export const options: NextAuthOptions = {
                     response_type: "code"
                 }
             },
-            // profile(profile, tokens) {
-            //     // console.log("from top",profile)
-            //     // return {profile, tokens};
-            //     // profile
-            //     profile.test = "no noame"
-            //     return profile
-            // },
-
         }),
     ],
     callbacks: {
@@ -33,24 +25,10 @@ export const options: NextAuthOptions = {
         },
 
         async jwt(params) {
-            console.log("params token", params)
-            // console.log("profile", profile)
-            // console.log("account", account)
-            // console.log("user", user)
-            // // console.log("user", user)
-            // console.log("session", session)
-            // if (user) token.role = user?.role
             return params.token
         },
 
         async session(params) {
-            // console.log("params sesion", params)
-            // console.log("token", token)
-            // // console.log("profile", profile)
-            // console.log("account", newSession)
-            // console.log("user", user)
-            // // console.log("user", user)
-            // console.log("session", session)
             if (params.session?.user) {
                 const findUser = await prisma.user.findFirst({ where: { email: params?.session?.user?.email } })
                 if (findUser) {

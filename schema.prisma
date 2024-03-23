@@ -8,30 +8,69 @@ datasource db {
     url      = env("POSTGRES_PRISMA_URL")
 }
 
-model Post {
-    id        String  @id @default(cuid())
-    title     String
-    content   String?
-    published Boolean @default(false)
-    isPublic  Boolean @default(false)
-    author    User?   @relation(fields: [authorId], references: [id])
-    authorId  String?
-}
-
 model User {
-    id        String   @id @default(cuid())
+    id        String     @id @default(cuid())
     name      String?
-    email     String?  @unique
+    email     String?    @unique
     image     String?
-    role      Role     @default(USER)
-    createdAt DateTime @default(now()) @map(name: "created_at")
-    updatedAt DateTime @updatedAt @map(name: "updated_at")
-    posts     Post[]
+    role      Role       @default(USER)
+    createdAt DateTime   @default(now()) @map(name: "created_at")
+    updatedAt DateTime   @updatedAt @map(name: "updated_at")
+    Posts     Post[]
+    Favorites Favorite[]
+    Comments  Comment[]
 
     @@map(name: "users")
+}
+
+model Post {
+    id        String     @id @default(cuid())
+    title     String
+    content   String?
+    published Boolean    @default(false)
+    isPrivate Boolean    @default(false) @map("is_public")
+    postType  PostTypes  @default(MARKDOWN) @map("post_type")
+    language  String?
+    authorId  String     @map("author_id")
+    author    User       @relation(fields: [authorId], references: [id])
+    Favorite  Favorite[]
+    Comment   Comment[]
+
+    @@map(name: "posts")
+}
+
+model Favorite {
+    id         String   @id @default(uuid())
+    postId     String   @map("post_id")
+    userId     String?  @map("user_id")
+    isFavorite Boolean  @default(true) @map("is_favorite")
+    createdAt  DateTime @default(now()) @map("created_at")
+    User       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+    Post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@map(name: "favorites")
+}
+
+model Comment {
+    id        String   @id @default(uuid())
+    postId    String   @map("post_id")
+    userId    String?  @map("user_id")
+    desc      String?
+    createdAt DateTime @default(now()) @map("created_at")
+    updateAt  DateTime @updatedAt @map("update_at")
+    User      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+    Post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+    @@map(name: "comments")
 }
 
 enum Role {
     ADMIN
     USER
+}
+
+enum PostTypes {
+    MARKDOWN
+    CODE
+    TEXT
 }
