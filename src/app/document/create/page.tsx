@@ -1,17 +1,22 @@
 "use client"
-import React, { useState } from 'react';
-import Select from "react-select"
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
-import { PostTypes } from '@prisma/client';
 import Code from '@/components/Contents/Code';
-import Text from '@/components/Contents/Text';
 import Markdown from '@/components/Contents/Markdown';
+import Text from '@/components/Contents/Text';
+import { post } from '@/lib/api';
+import { PostTypes } from '@prisma/client';
+import { useMutation } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Select from "react-select";
 
 type IFormInput = {
     title: string
     postType: any
     isPrivate: boolean
-    content: string
+    content: string,
+    authorId?: any,
+    language?: any
 }
 
 type selectedType = {
@@ -20,19 +25,42 @@ type selectedType = {
 }
 
 const page = () => {
+    const session = useSession();
     const [selectedType, setSelectedtype] = useState<selectedType>();
-    const { register, handleSubmit, getValues, control, getFieldState, setValue } = useForm<IFormInput>({
+    const { register, handleSubmit, getValues, control, getFieldState, setValue, reset } = useForm<IFormInput>({
 
     })
 
+    const createMutation = useMutation({
+        mutationFn: (data) => post('/api/posts', data),
+        onSuccess(data) {
+            // console.log("Success : ", data)
+            reset();
+        },
+        onError(error) {
+            console.log("Error: ", error)
+        },
+    })
+
+
     const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        console.log("form data: ", data)
+        if (!session?.data?.user?.id) {
+            return;
+        }
+        data.authorId = session?.data?.user?.id
+        if (data?.postType) {
+            data.postType = data?.postType?.value
+        }
+        if (data?.language) {
+            data.language = data?.language?.value
+        }
+        createMutation.mutate(data);
     }
 
 
     const getContentField = () => {
         if (selectedType?.value === PostTypes.CODE) {
-            return <Code register={register} control={control} />
+            return <Code control={control} />
         }
         else if (selectedType?.value === PostTypes.TEXT) {
             return <Text control={control} />
@@ -79,9 +107,14 @@ const page = () => {
                 <input type="checkbox" className="form-check-input" id="isPrivate" {...register("isPrivate")} />
                 <label className="form-check-label" htmlFor="isPrivate"  >Is Private</label>
             </div>
-
-
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">
+                {
+                    createMutation.isPending ?
+                        "loading...."
+                        :
+                        "Submit"
+                }
+            </button>
         </form>
     );
 };

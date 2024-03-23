@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Controller } from "react-hook-form"
-import Editor from '@monaco-editor/react';
-import Select from 'react-select';
 import { programmingLanguages } from '@/lib/constant';
+import Editor from '@monaco-editor/react';
+import { useState } from 'react';
+import { Controller } from "react-hook-form";
+import Select from 'react-select';
 
 type selectedType = {
     value: any,

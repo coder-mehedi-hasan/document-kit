@@ -12,7 +12,7 @@ const Markdown = ({ control }) => {
                     <MarkdownEditor
                         // value={mdStr}
                         {...field}
-                        height="300px"
+                        height="500px"
                         onChange={(value, viewUpdate) => {
                             field.onChange(value);
                         }}

@@ -1,25 +1,23 @@
 "use client"
-import React, { useState } from 'react';
 import { Controller } from "react-hook-form";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState } from 'draft-js';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const Text = ({ control }) => {
-    const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-
-    const handleEditorChange = (newState) => {
-        setEditorState(newState);
-    };
-
-    console.log(editorState)
-
     return (
         <>
-            <Editor
-                editorState={editorState}
-                onEditorStateChange={handleEditorChange}
+            <Controller
+                name="content"
+                control={control}
+                render={({ field }) => (
+                    <ReactQuill
+                        {...field}
+                        theme="snow"
+                        style={{height:"500px"}}
+                    />
+                )}
             />
+
         </>
     );
 };
