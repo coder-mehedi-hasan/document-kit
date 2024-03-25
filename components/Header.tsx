@@ -22,7 +22,7 @@ const Header = () => {
                                     {
                                         session?.data?.user?.image ?
                                             <div className="rounded-circle overflow-hidden" style={{ height: "60px", width: "60px", overflow: "hidden" }}>
-                                                <img className="img-fluid" src={session?.data?.user?.image} alt={session?.data?.user?.name?.slice(0, 8)} />
+                                                <img className="img-fluid" src={session?.data?.user?.image ?? "https://picsum.photos/200/300"} alt={session?.data?.user?.name?.slice(0, 8)} />
                                             </div>
                                             :
                                             <FaRegUserCircle className="h-100 w-100" />

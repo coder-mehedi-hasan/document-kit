@@ -2,10 +2,10 @@ import { PostTypes } from '@prisma/client';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import React from 'react';
 
-const Preview = ({ post }) => {
+const Preview = ({ post }: any) => {
     const getContent = () => {
         if (post?.postType === PostTypes.MARKDOWN) {
-            return <MarkdownEditor.Markdown source={post?.content} height="700px" />
+            return <MarkdownEditor.Markdown source={post?.content} style={{ height: "700px" }} />
         }
         else if (post?.postType === PostTypes.CODE) {
             return <code>{post?.content}</code>

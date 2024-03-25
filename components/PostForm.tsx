@@ -26,14 +26,14 @@ type selectedType = {
 
 
 const PostForm = () => {
-    const session = useSession();
+    const session :any= useSession();
     const [selectedType, setSelectedtype] = useState<selectedType>();
     const { register, handleSubmit, getValues, control, getFieldState, setValue, reset } = useForm<IFormInput>({
 
     })
 
-    const createMutation = useMutation({
-        mutationFn: (data) => post('/api/posts', data),
+    const createMutation :any = useMutation({
+        mutationFn: (data :any) => post('/api/posts', data),
         onSuccess(data) {
             // console.log("Success : ", data)
             reset();

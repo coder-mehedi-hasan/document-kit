@@ -9,7 +9,7 @@ type selectedType = {
     label: string,
 }
 
-const Code = ({ control }) => {
+const Code = ({ control }:any) => {
     const [language, setLanguage] = useState<selectedType>();
 
     return (

@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const Text = ({ control }) => {
+const Text = ({ control }:any) => {
     return (
         <>
             <Controller

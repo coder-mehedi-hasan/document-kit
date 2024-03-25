@@ -29,7 +29,7 @@ export default function Home() {
         <div className="col-lg-3">
           <div className="list-group">
             {
-              posts?.map((post: post) => <button type="button" onClick={()=> setSelectedPost(post)} className={`list-group-item list-group-item-action ${post?.id === selectedPost?.id ? "active" : ""}`}>{post?.title}</button>)
+              posts?.map((post: post) => <button type="button" key={post?.id} onClick={() => setSelectedPost(post)} className={`list-group-item list-group-item-action ${post?.id === selectedPost?.id ? "active" : ""}`}>{post?.title}</button>)
             }
             {/* <button type="button" className="list-group-item list-group-item-action active" aria-current="true">
               The current button
